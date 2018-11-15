@@ -24,7 +24,8 @@ Grundlagen der Wahrnehmung. Grundlagen der Fouriertransformation. Bilder, Bildfi
 
 ## Übungen
 
-- [X] Übungsblatt 2 (Abgabe 09.11.2018). [Handout](https://moodle.informatik.tu-darmstadt.de/mod/assign/view.php?id=15011).
+- [X] Übungsblatt 1 (Abgabe 02.11.2018). Einteilung in die Übungsgruppe.
+- [X] Übungsblatt 2 (Abgabe 09.11.2018). [Handout](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/81891/mod_assign/introattachment/0/VC_Übungsblatt2.pdf?forcedownload=1).
     - [X] [Abgabe](exercises/solution02.pdf). Feedback: 9/9.
 - [ ] Übungsblatt 3 (Abgabe 16.11.2018). [Handout](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/94145/mod_assign/introattachment/0/VC_Übungsblatt3.pdf?forcedownload=1).
 - [ ] Übungsblatt 4

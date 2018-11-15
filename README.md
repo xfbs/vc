@@ -21,6 +21,8 @@ Grundlagen der Wahrnehmung. Grundlagen der Fouriertransformation. Bilder, Bildfi
 
 *   Einführung und Visual Computing. [PDF](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=15007).
 *   Grundlagen der menschlichen Wahrnehmung. [PDF](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=15012).
+*   Erkennung. [PDF](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=15014).
+*   Fouriertheorie. [PDF](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=16872).
 
 ## Übungen
 

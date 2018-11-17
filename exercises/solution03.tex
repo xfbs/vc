@@ -31,6 +31,7 @@
 \usepackage{listings}
 \lstset{
   basicstyle=\ttfamily,
+  numberstyle=\sffamily\footnotesize\color{gray},
   %escapeinside=||,
   keywordstyle=\color{blue!50!black},
   stringstyle=\color{green!50!black}}
@@ -48,8 +49,8 @@
 ]{hyperref}
 
 \subject{Visual Computing}
-\title{Übungsblatt 2}
-\subtitle{Lösung}
+\title{Objekterkennung und Bayes}
+\subtitle{Übungsblatt 3}
 \author{Patrick Elsen, Dmytro Klepatskyi,\\Costa Weiland, Nana Atchoukeu Chris-Mozart}
 \date{Wintersemester 2018-2019}
 \publishers{Technische Universität Darmstadt}
@@ -57,50 +58,86 @@
 \begin{document}
 \maketitle
 
-\subsection*{Aufgabe 1: Das Drei-Stufen-Modell}
-\emph{Nennen Sie die drei Stufen der menschlichen Informationsverarbeitung. Falls die Stufe weiter in Untersysteme aufgeteilt wurde, nennen Sie auch diese.}
-\par\medskip\noindent
-Die drei Stufen der menschlichen Informationsverarbeitung sind die Wahrnehmung von Eindrücken durch die Sinne (\emph{sensory perception}), die Entscheidungsfindung im Gehirn (\emph{cognition}), sowie die Reaktion des Körpers (\emph{motor response}). Die erste Stufe, die Wahrnehmung, kann man in drei unterschiedliche Systeme einteilen, die alle parallel laufen. Dazu gehört das visuelle System (Sehen), das akustische System (Hören) und das haptische System (Fühlen). Ebenso kann man die Reaktion in mehrere Untersysteme unterteilen, unter anderem in das stimmliche System (Sprechen) sowie das motorische System (körperliche Bewegung).
+\section*{Aufgabe 1: Gesichtserkennung}
+
+\emph{Benennen Sie das im folgenden Bild dargestellte Verfahren und erklären Sie kurz, wie dieses funktioniert.}
+
+Das auf dem Bild dargestellte Verfahren heißt \emph{Sliding Window Approach} (Suchen über Raum und Skalierung). Das Verfahren gehört zu den \emph{Appearance-Based Methoden}. Das Bild wird zunächst horizontal und vertikal gescannt. Dann wird das Bild um 1,2 verkleinert und wieder gescannt. Dies wird wiederholt, bis das Bild zu klein ist.
 
 \bigskip\noindent
-\emph{Geben Sie zwei Beispiele für Alltagssituationen, in denen das 3-Stufenmodell angewendet wird. Unterteilen Sie die Alltagssituation dabei in die 3 Stufen und geben Sie für jede Stufe die jeweilige Aktion an.}
-\par\medskip\noindent
-Das 3-Stufenmodell wendet man im Fahrschulunterricht an, um zu modellieren, wie man in einer Gefahrensituation reagiert. Hier entsteht ein meist visueller Reiz, der Wahrgenommen werden muss, der als Gefahrensituation erkannt werden muss, und idealerweise wird als Reaktion eine Gefahrenbremsung eingeleitet. Dieser Prozess dauert ungefähr \SI{100}{\milli\second}.
+\emph{Wie setzen sich die Trainingsdaten für dieses Verfahren zusammen?}
 
-Beim Schießsport wendet man ebenso das 3-Stufenmodell an. Man zielt mit seiner Waffe auf eine Zielscheibe, und versucht dabei, die Waffe so stetig wie möglich zu halten. Normalerweise hat man bei der Schießübung schon das ein oder andere Bier intus, was dabei hilfreich ist. Ständig kommen visuelle Reize im Auge an. Aber erst wenn die Kimme im Korn ist und der Zielapparat ins Schwarze zielt, wird das wahrgenommen, und es entsteht eine Reaktion, dass der Finger den Abzug durchzieht. 
+Die Trainingsdaten setzen sich aus sowohl negativen (keine Gesichter) als auch positiven Beispielen (Gesichter). Durch diese Datensammlung ist für das Lernen des Erscheinungsmodells relevant.
 
-\subsection*{Aufgabe 2: Wahrnehmung}
-\emph{Was ist Vektion und wie kommt Sie zu Stande?}
-\par\medskip\noindent
-Vektion ist ein Symptom davon, dass die Wahrnehmung verschiedener Sinne nicht isoliert, sondern als Gesamtheit geschieht und interpretiert wird. Wenn man eine bewegte Szenerie sieht, hat man selbst das Gefühl, sich zu bewegen. Das kommt zum Beispiel dann vor, wenn man in einem (stehenden) Zug sitzt, neben dem ein Zug abfährt. Die Bewegung, die man dann sieht, vermittelt einem das Gefühl, dass man sich selbst bewegt. 
+\section*{Aufgabe 2: Bayes Decision Theory}
+
+\emph{Was sagen prior $P(C_k)$, likelihood $P(x|C_k)$ und posteriori $P(C_k|x)$ aus? Hinweis: $C_k$ ist eine Klasse und $x$ ein Merkmal.}
+
+Die \emph{a priori} oder prior Wahrscheinlichkeit sagt aus, mit welcher Wahrscheinlichkeit wir eine gewisse Klasse erwarten, ohne dass wir irgendwelche weiteren Informationen haben. Wenn man von der Buchstabenerkennung von deutschem Test ausgeht, dan kann man mit einem kleinen Ruby-Programm die relativen Wahrscheinlichkeiten der Buchstaben im Deutschen ermitteln. 
+\begin{lstlisting}[language=ruby,numbers=left]
+def sorted_distribution(text)
+  absolute_distribution = text
+    .scan(/[a-zA-Z]/)
+    .inject({}){|m,c| m[c] = (m[c]||0)+1; m}
+  total = absolute_distribution.values.sum
+  relative_distribution = absolute_distribution
+    .map{|k, v| [k, v.to_f / total]}
+  sorted = relative_distribution
+    .sort_by{|k, v| v}
+end
+
+# https://raw.githubusercontent.com/martinth/mobverdb/master/faust.txt
+faust_distribution = sorted_distribution(File.read("faust.txt"))
+puts "Faust: P(C_#{faust_distribution.last[0]}) = #{faust_distribution.last[1]}"
+\end{lstlisting}
+Dieses Programm gibt aus $P(C_e) = 0,14328213937810988$. Das bedeutet also, wenn wir deutsche Buchstaben erkennen wollen, und wir nichts weiter über den Buchstaben wissen, dann wissen wir, dass der Buchstabe mit einer Wahrscheinlichkeit von 14,3\% ein kleines \emph{e} sein könnte.
+
+Wenn wir genauer über Buchstaben urteilen wollen, dann müssen wir uns Merkmale anschauen und messen. Das können zum Beispiel Dimensionen, Pixelwerte oder ähnliches sein. $P(x|C_k)$ ist die Wahrscheinlichkeit, dass ein Buchstabe der Klasse $C_k$ das Merkmal $x$ besitzt. Das kann man lesen als \emph{die Wahrscheinlichkeit von $x$ wenn $C_k$ gegeben ist}. Dies nennt man auch \emph{likelihood}.
+
+Fast das Gegenteil dazu ist die \emph{posteriori}-Wahrscheinlichkeit. Hat man einen unbekannten Buchstaben, bei dem man das Merkmal $x$ gemessen hat, dann sagt einem $P(C_k|x)$ wie groß die Wahrscheinlichkeit ist, dass es sich hierbei um einen Buchstaben der Klasse $C_k$ handelt.
 
 \bigskip\noindent
-\emph{Nennen Sie den Unterschied zwischen Reiz und Wahrnehmung.}
-\par\medskip\noindent
-Ein Reiz ist eine physikalische, messbare Einheit und bestimmt, in welchem Ausmaß unsere Sinne erreicht werden. Die Wahrnehmung ist aber nur eine Interpretation dieses Reizes. Diese hängt von dem Individuum ab, und ist nur eine Interpretation der Realität.
+\emph{Gegeben sei der Satz \enquote{Der Satz von Bayes ist nach dem englischen Statistiker Thomas Bayes benannt.} Bestimmen Sie die Prior-Wahrscheinlichkeit des Buchstaben \enquote{s} im zuvor zitierten Satz. Hinweis: Nur Buchstaben werden als relevante Zeichen für die Prior-Wahrscheinlichkeit betrachtet. Kommas, Punkte, Leerzeichen, etc. werden ignoriert.}
+
+Hier können wir wieder das Ruby-Programm verwenden. Dazu führen wir die Funktion einfach auf dem gegebenen Text aus.
+\begin{lstlisting}[language=ruby,numbers=left]
+quote = "Der Satz von Bayes ist nach dem englischen Statistiker Thomas Bayes benannt."
+quote_distribution = sorted_distribution(quote)
+puts "Quote: P(C_s) = #{quote_distribution.to_h['s']}"
+\end{lstlisting}
+Dabei bekommen wir den Output $P(s) = 0,09375$.
+
+\medskip\noindent
+\emph{Zusätzlich ist $P(x|s) = 0,4$ und $P(x) = 0,1$ gegeben, wobei $x$ ein beliebiges Merkmal ist. Berechnen Sie die a-posteriori-Wahrscheinlichkeit $P(s|x)$.}
+
+Hier kann man einfach eine Formel anwenden.
+\begin{equation*}
+P(s|x) = \frac{P(x|s)P(s)}{P(x)} = \frac{0,4 \cdot 0,09375}{0,1} = 0,00375
+\end{equation*}
+
+\medskip\noindent
+\emph{Wie groß ist die Summe der Prior-Wahrscheinlichkeiten für alle relevanten Zeichen im oben zitierten Satz?}
+
+Per Definition ist die Summe aller Zeichen 1. 
+
+\medskip\noindent
+\emph{Was nimmt der Naive Bayes Klassifikator an? Trifft diese Annahme immer zu?}
+
+Der naïve Bayes-Klassifikator nimmt an, dass alle Merkmale $x_0, \dots, x_n$ statistisch unabhängig sind. Das ist nicht immer wahr, gibt aber in der Praxis gute Resultate.
+
+\section*{Aufgabe 3: Erkennungsarten}
+
+\emph{Wie unterscheiden sich die Begriffe \emph{Identifikation} und \emph{Verifikation} voneinander?}
+
+Bei der Verifikation gibt die Person ihre Identifikationsdaten (Benutzer-ID, E-Mail) dem System, und das System verifiziert anhand der biometrischen Merkmale ob die Person tatsächlich präsent ist. 
+
+Bei einer Identifikation findet das System allein anhand der biometrischen Merkmale heraus, um welche Person es sich handelt, und verifiziert diese. Das System muss die biometrischen Daten also mit denen aller Benutzer in den Referenzmerkmalsdatensätzen abgleichen.
 
 \bigskip\noindent
-\emph{Woran liegt es, dass sich Wahrnehmungen des gleichen Reizes unterscheiden können? Nennen Sie 2 Gründe.}
-\par\medskip\noindent
-Reize werden relativ und nicht absolut interpretiert. Also werden die selben Reize in unterschiedlichen Kontexten unterschiedlich wahrgenommen. Beispielsweise wird ein Lichtreiz einer konstanten Intesität als heller empfunden, wenn die Umgebung sehr dunkel ist (nachts), verglichen mit einer hellen Umgebung (tagsüber). Ein anderes Beispiel ist, dass Wahrnehmung zum Beispiel von der Kultur abhängt. So könnte es zum Beispiel passieren, dass ein Christ in einer Wolke einen Jesus sieht, ein Moslem einen Mohammed, und ein Meteorologe kondensierte suspendierte Wassertröpfchen.
+\emph{Geben Sie für jede Erkennungsart einen Anwendungsfall an.}
 
-\subsection*{Aufgabe 3: Frühe Wahrnehmung}
-\emph{Beschreiben Sie kurz in eigenen Worten, was man unter „früher Wahrnehmung“ versteht. Geben Sie außerdem 3 Beispiele für frühe Wahrnehmung an, die nicht in den Vorlesungsfolien genannt werden.}
-\par\medskip\noindent
-Frühe Wahrnehmung bezeichnet alles, was in \SI{10}{\milli\second} oder schneller wahrgenommen wird. So können zum Beispiel Farbe (starke Farbunterschiede) und Richtungen erkannt werden, bevor das Bild an sich erkannt wird. Wenn man zum Beispiel ein Bild mit 15 Kreisen und einem Stab sieht, dann kann man diesen Stab früh Wahrnehmen. Wenn man ein Bild mit 10 Rechtecken, die alle mit einer Seite waagerecht stehen bis auf eins, was leicht schräg steht, dann kann man dies früh wahrnehmen. 
+Der Irisscanner an der Arbeitsstelle ist ein Verifikationssystem. Hier präsentiert man seinen Arbeitsausweis, der dem System per RFID mitteilt um welche Person es sich handelt. Der Irisabgleich ist also nur dazu da, um sicherzustellen, dass es sich wirklich um die richtige Person handelt, bevor man sicherheitskritische Bereiche betreten kann.
 
-\subsection*{Aufgabe 4: Depth Cue Theorie}
-\emph{Nennen Sie die 3 Kategorien von Depth Cues.}
-\par\medskip\noindent
-Es gibt binokulare Depth Cues, die dadurch entstehen, dass wir in Stereo (also mit zwei Augen) sehen. Die zweite Kategorie von Depth Cues sind Pictorial Depth Cues. Dies sind alle Depth Cues, die von einem Bild ausgehen (also mit nur einem Auge erkannt werden können). Die dritte Kategorie sind dynamische Depth Cues, die aus der Bewegung entstehen.
-
-\bigskip\noindent
-\emph{Geben Sie für jede Kategorie jeweils ein Beispiel an und erklären Sie dieses kurz.}
-\par\medskip\noindent
-Bei der \emph{Stereoskopie} arbeiten beide Augen zusammen, um Tiefe zu erkennen. Wird ein Gegenstand betrachtet, so sieht, bedingt durch den Abstand der Augen, das linke Auge das Objekt aus einem geringfügig anderen Winkel als das rechte Auge. Im Gehirn werden diese beiden Einzelbilder zu einem dreidimensionalen Bild zusammengefügt.
-
-Bei den \emph{Pictorial Depth Cues} werden gewisse Eigenschaften von Bildern ausgewertet, um Tiefe zu erkennen. Bei der Linearperspektive wird durch Verkleinerung der Objekten auf dem Bild mit zunehmender Entfernung vom Betrachter so dargestellt, dass der Eindruck von dem dreidimensionalen Raum entsteht, obwohl man nur 2D Bild betrachtet.
-
-Bei den \emph{Dynamischen Depth Cues} werden Bewegungen ausgewertet, um Tiefen zu erkennen. Bewegung von 2D-Körpern, die den Eindruck der 3D-Tiefenkomponente auslösen. Wenn diese Körper sich nicht bewegen, kann keine 3D-Anordnung erkannt werden.
+Die Gesichtserkennung, die von der chinesischen Regierung benutzt wird, um als Teil des \emph{Social Credit}-Programms die Aktionen der Bürger zu überwachen\footnote{\url{https://www.scmp.com/node/2157883}}, ist ein Beispiel für ein Identifikationssystem. Hierbei werden aufgezeichnete Gesichter in Echtzeit mit einer Genaugkeit von 90\% mit einer 1,2 Milliarden großen Datenbank verglichen, um die Menschen zu identifizieren und negative Aktionen zu bestrafen. Beispielsweise können Punkte abgezogen werden, wenn man bei Rot über die Ampel geht. 
 
 \end{document}

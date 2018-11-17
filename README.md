@@ -19,17 +19,18 @@ Grundlagen der Wahrnehmung. Grundlagen der Fouriertransformation. Bilder, Bildfi
 
 ## Folien
 
-*   Einführung und Visual Computing. [PDF](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=15007).
-*   Grundlagen der menschlichen Wahrnehmung. [PDF](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=15012).
-*   Erkennung. [PDF](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=15014).
-*   Fouriertheorie. [PDF](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=16872).
+- [X] Einführung und Visual Computing. [PDF](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=15007).
+- [X] Grundlagen der menschlichen Wahrnehmung. [PDF](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=15012).
+- [ ] Erkennung. [PDF](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=15014).
+- [ ] Fouriertheorie. [PDF](https://moodle.informatik.tu-darmstadt.de/mod/resource/view.php?id=16872).
 
 ## Übungen
 
 - [X] Übungsblatt 1 (Abgabe 02.11.2018). Einteilung in die Übungsgruppe.
 - [X] Übungsblatt 2 (Abgabe 09.11.2018). [Handout](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/81891/mod_assign/introattachment/0/VC_Übungsblatt2.pdf?forcedownload=1).
     - [X] [Abgabe](exercises/solution02.pdf). Feedback: 9/9.
-- [ ] Übungsblatt 3 (Abgabe 16.11.2018). [Handout](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/94145/mod_assign/introattachment/0/VC_Übungsblatt3.pdf?forcedownload=1).
+- [X] Übungsblatt 3 (Abgabe 16.11.2018). [Handout](https://moodle.informatik.tu-darmstadt.de/pluginfile.php/94145/mod_assign/introattachment/0/VC_Übungsblatt3.pdf?forcedownload=1).
+    - [X] [Abgabe](exercises/solution03.pdf). *Noch nicht bewertet*.
 - [ ] Übungsblatt 4
 - [ ] Übungsblatt 5
 - [ ] Übungsblatt 6

@@ -1,0 +1,136 @@
+\documentclass[
+  ngerman,
+  DIV=14
+]{scrartcl}
+\usepackage{babel}
+\usepackage{csquotes}
+
+% typography
+\usepackage{fontspec}
+%\usepackage[utopia]{mathdesign}
+\usepackage{newpxmath}
+\setsansfont{Open Sans}[
+  BoldFont={Open Sans Bold},
+  ItalicFont={Open Sans Italic}]
+\setmonofont[Scale=0.87]{Menlo}
+\setmainfont{Palatino}
+\linespread{1.15}
+%\renewcommand\familydefault{\sfdefault}
+\usepackage[factor=1000]{microtype}
+
+% graphics, drawings, etc.
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{soul}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.arrows}
+\usetikzlibrary{positioning}
+
+% highlighting, lists, code
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  numberstyle=\sffamily\footnotesize\color{gray},
+  %escapeinside=||,
+  keywordstyle=\color{blue!50!black},
+  stringstyle=\color{green!50!black}}
+
+% math
+\usepackage{amsmath}
+\usepackage{siunitx}
+
+% links
+\usepackage[
+  colorlinks,
+  linkcolor={red!50!black},
+  citecolor={blue!50!black},
+  urlcolor={blue!80!black}
+]{hyperref}
+
+\subject{Visual Computing}
+\title{Objekterkennung und Bayes}
+\subtitle{Übungsblatt 4}
+\author{Patrick Elsen, Dmytro Klepatskyi,\\Costa Weiland, Nana Atchoukeu Chris-Mozart}
+\date{Wintersemester 2018-2019}
+\publishers{Technische Universität Darmstadt}
+
+\begin{document}
+\maketitle
+
+\section*{Aufgabe 1: Abtastung}
+
+\emph{Die Signale $f_1(t)$ und $f_2(t)$ werden mit den Abtastzeiten $T_1 = 1/400s$ und $T_2 = 1/1500s$ abgetastet.}
+\begin{align*}
+f_1(t) &= \sin(2 * \pi * 100) = 0\\
+f_2(t) &= \sin(4000 * \pi) = 0 
+\end{align*}
+
+\emph{Wird das Abtasttheorem eingehalten?}
+
+Ja, auf jeden Fall: sowohl $f_1$ als auch $f_2$ sind konstante Ausdrücke, die nicht von $t$ abhängen.
+
+Anders würde es aussehen, wenn es sich hierbei um einen Tippfehler handelt, und $f_1(t) = \sin(2 * \pi * 100 * t)$ sowie $f_2(t) = \sin(4000 * \pi * t)$ gemeint sind. Das könnte eigentlich garnicht sein, da das Übungsblatt nicht korrigiert wurde. Aber dennoch gehen wir davon aus. Laut dem Abtasttheorem von Whittaker-Shannon wissen wir, dass für eine Funktion $f(t)$ mit der endlichen Grenzfrequenz $u_G$ wir eine Abtastfrequenz nehmen müssen, die mindestens doppelt so hoch ist wie $u_G$. Die Funktion $f_1$ ist eine pure Sinusfunktion mit einer Frequenz von 100 Hz, eine Abtastrate von $T_1 = 1/400s$ ist also akzeptabel, hier ist das Abtasttheorem eingehalten. Anders sieht es bei der $f_2$ aus, diese hat eine Frequenz von 2000 Hz, die Abtastrate $T_2 = 1/1500s$ ist hier nicht ausreichend um das Abtasttheorem zu erfüllen. 
+
+\emph{Welchen Effekt erwarten Sie, wenn das Abtasttheorem nicht eingehalten ist? Erklären Sie diesen kurz.}
+
+Wenn ein Signal mit einer zu niedrigen Frequenz abgetastet wird, dann wird es nicht korrekt aufgezeichnet und kann nicht richtig rekonstruiert werden. Es entsteht ein sogenanntes Aliasing.
+
+\section*{Aufgabe 2: Faltung}
+
+\emph{Was besagt der Faltungssatz? Nennen Sie eine in der Vorlesung genannte Anwendung und erklären Sie, warum der Faltungssatz angewandt wird.}
+
+\section*{Aufgabe 3: Fouriertheorie}
+
+\emph{Die Fourierreihe ist definiert durch}
+\begin{align*}
+  f(x) = \sum_{n=0}^{\infty} (a_n \cos(n x) + b_n \sin(n x))
+\end{align*}
+
+\emph{mit}
+\begin{align*}
+a_0 = \frac{1}{2n}\int_{-\pi}^{\pi} f(x) dx  
+\end{align*}
+
+\emph{Gegeben ist die folgende 2π-periodische Rechteckfunktion}
+\begin{align*}
+f(x) = \begin{cases}
+  -1, & \text{wenn } -\pi \leq x < -\frac{\pi}{2}\\
+  0, & \text{wenn } -\frac{\pi}{2} \leq x < \frac{\pi}{2}\\
+  1, & \text{wenn } \frac{\pi}{2} \leq x < \pi
+\end{cases} 
+\end{align*}
+
+
+\emph{Berechnen Sie die Fourierkoeffizienten und geben Sie die so weit wie möglich vereinfachte resultierende Fourierreihe an. Geben Sie auch alle Zwischenschritte an.}
+
+\begin{align*}
+a_n 
+  &= \frac{1}{\mathrm\pi}
+  \int_{-\pi}^\pi f(x)\cos(n x) dx\\
+  &= \frac{1}{\mathrm\pi} \left[\int_{-\pi}^{-\frac{\pi}{2}} (-1) \cos(n x) dx + \int_{-\frac{\pi}{2}}^\frac{\pi}{2} (0) \cos(n x) dx + \int_\frac{\pi}{2}^\pi (-1) \cos(n x) dx\right]\\
+&=\frac{1}{\pi}\left[-\left(\frac{\sin(-\frac{\mathrm{πn}}2)}n-\frac{\sin(-\mathrm{πn})}n\right)+0-\left(\frac{\sin(\mathrm{πn})}n-\frac{\sin(\frac{\mathrm{πn}}2)}n\right)\right]\\
+&=-\frac1{\mathrm\pi}\left(-\frac{\sin(\frac{\mathrm{πn}}2)}n-\frac{\sin(\frac{\mathrm{πn}}2)}n\right)\\
+&=-\frac{1}{\pi}\left(-2\frac{\sin(\frac{\mathrm\pi}2n)}{\displaystyle n}\right)=\frac2{\mathrm\pi}\frac{\sin(\frac{\mathrm\pi}{2} n)}{n}
+\end{align*}
+
+
+
+
+%\begin{array}{l}\begin{array}{l}b_n=\frac1{\mathrm\pi}\int_{-\mathrm\pi}^\mathrm\pi f(x)\sin\left(nx\right)dx=\frac1{\mathrm\pi}\left[\int_{-\mathrm\pi}^{-\frac{\mathrm\pi}2}(-1)\sin(nx)dx+\int_{-\frac{\mathrm\pi}2}^\frac{\mathrm\pi}2(0)\;\sin(nx)dx\;+\int_\frac{\mathrm\pi}2^\mathrm\pi(-1)\sin(nx)dx\right]=\end{array}\\\frac1{\mathrm\pi}\left[\left(\frac{\displaystyle\cos(-\frac{\mathrm{πn}}2)}n-\frac{\displaystyle\cos(-\mathrm{πn})}n\right)+0+\left(\frac{\displaystyle\cos(\mathrm{πn})}n-\frac{\displaystyle\cos(\frac{\mathrm{πn}}2)}n\right)\right]=\\=\frac1{\mathrm\pi}\left(\frac{\displaystyle\cos(\frac{\mathrm{πn}}2)}n-\frac{\displaystyle\cos(\mathrm{πn})}n+\frac{\displaystyle\cos(\mathrm{πn})}n-\frac{\displaystyle\cos(\frac{\mathrm{πn}}2)}n\right)=\frac1{\mathrm\pi}0=0\\\end{array}
+
+
+
+%{\begin{array}{l}f(x)=\frac2{\mathrm\pi}{\textstyle\sum_{n=0}^\infty}\frac{\sin({\displaystyle\frac{\mathrm\pi}2}n)\cos(nx)}n=\frac2{\mathrm\pi}\left(\frac{\sin({\displaystyle\frac{\mathrm\pi}2})\cos(x)}1+\frac{\sin(\mathrm\pi)\cos(2x)}2+\frac{\sin({\displaystyle\frac{3\mathrm\pi}2})\cos(3x)}3+...\right)=\\=\frac2{\mathrm\pi}\left(\cos(x)-\frac{\cos(3x)}3+\frac{\cos(5x)}5-\frac{\cos(7x)}7+...\right)\end{array}}
+
+
+
+\section*{Aufgabe 4: Mathematische Grundlagen}
+
+\emph{Tragen Sie die folgenden Punkte in jeweils ein passendes Koordinatensystem ein und transformieren sie Polarkoordinaten zu kartesischen Koordinaten und umgekehrt. Runden Sie auf 4 Nachkommastellen.}
+
+\emph{Gegeben seien die folgenden Vektoren:}
+
+\emph{Blah.}
+
+\end{document}

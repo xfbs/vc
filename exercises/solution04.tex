@@ -113,12 +113,15 @@ a_n
 &=-\frac1{\mathrm\pi}\left(-\frac{\sin(\frac{\mathrm{πn}}2)}n-\frac{\sin(\frac{\mathrm{πn}}2)}n\right)\\
 &=-\frac{1}{\pi}\left(-2\frac{\sin(\frac{\mathrm\pi}2n)}{\displaystyle n}\right)=\frac2{\mathrm\pi}\frac{\sin(\frac{\mathrm\pi}{2} n)}{n}
 \end{align*}
-
-
-
-
-%\begin{array}{l}\begin{array}{l}b_n=\frac1{\mathrm\pi}\int_{-\mathrm\pi}^\mathrm\pi f(x)\sin\left(nx\right)dx=\frac1{\mathrm\pi}\left[\int_{-\mathrm\pi}^{-\frac{\mathrm\pi}2}(-1)\sin(nx)dx+\int_{-\frac{\mathrm\pi}2}^\frac{\mathrm\pi}2(0)\;\sin(nx)dx\;+\int_\frac{\mathrm\pi}2^\mathrm\pi(-1)\sin(nx)dx\right]=\end{array}\\\frac1{\mathrm\pi}\left[\left(\frac{\displaystyle\cos(-\frac{\mathrm{πn}}2)}n-\frac{\displaystyle\cos(-\mathrm{πn})}n\right)+0+\left(\frac{\displaystyle\cos(\mathrm{πn})}n-\frac{\displaystyle\cos(\frac{\mathrm{πn}}2)}n\right)\right]=\\=\frac1{\mathrm\pi}\left(\frac{\displaystyle\cos(\frac{\mathrm{πn}}2)}n-\frac{\displaystyle\cos(\mathrm{πn})}n+\frac{\displaystyle\cos(\mathrm{πn})}n-\frac{\displaystyle\cos(\frac{\mathrm{πn}}2)}n\right)=\frac1{\mathrm\pi}0=0\\\end{array}
-
+\begin{align*}
+b_n 
+&= \frac{1}{\pi} \int_{-\pi}^\pi f(x) \sin(n x) dx\\
+& =\frac{1}{\pi} \left[\int_{-\pi}^{-\frac{\pi}{2}}(-1)\sin(n x) dx + \int_{-\frac{\pi}2}^\frac{\mathrm\pi}2(0)\;\sin(nx)dx\;+\int_\frac{\pi}{2}^\pi(-1)\sin(n x) dx\right]\\
+&=\frac{1}{\pi}\left[\left(\frac{\cos(-\frac{\pi n}2)}n-\frac{\displaystyle\cos(-\mathrm{πn})}n\right)+0+\left(\frac{\displaystyle\cos(\mathrm{πn})}n-\frac{\displaystyle\cos(\frac{\mathrm{πn}}2)}n\right)\right]=\\
+&=\frac1{\mathrm\pi}\left(\frac{\displaystyle\cos(\frac{\mathrm{πn}}2)}n-\frac{\displaystyle\cos(\mathrm{πn})}n+\frac{\displaystyle\cos(\mathrm{πn})}n-\frac{\displaystyle\cos(\frac{\mathrm{πn}}2)}n\right)\\
+&=\frac1{\mathrm\pi}0\\
+&=0
+\end{align*}
 
 
 %{\begin{array}{l}f(x)=\frac2{\mathrm\pi}{\textstyle\sum_{n=0}^\infty}\frac{\sin({\displaystyle\frac{\mathrm\pi}2}n)\cos(nx)}n=\frac2{\mathrm\pi}\left(\frac{\sin({\displaystyle\frac{\mathrm\pi}2})\cos(x)}1+\frac{\sin(\mathrm\pi)\cos(2x)}2+\frac{\sin({\displaystyle\frac{3\mathrm\pi}2})\cos(3x)}3+...\right)=\\=\frac2{\mathrm\pi}\left(\cos(x)-\frac{\cos(3x)}3+\frac{\cos(5x)}5-\frac{\cos(7x)}7+...\right)\end{array}}

@@ -21,11 +21,13 @@
 % graphics, drawings, etc.
 \usepackage{xcolor}
 \usepackage{graphicx}
+\usepackage{pgfplots}
 \usepackage{tikz}
 \usepackage{soul}
 \usetikzlibrary{shapes.geometric}
 \usetikzlibrary{shapes.arrows}
 \usetikzlibrary{positioning}
+\usetikzlibrary{pgfplots.polar}
 
 % highlighting, lists, code
 \usepackage{listings}
@@ -80,6 +82,8 @@ Wenn ein Signal mit einer zu niedrigen Frequenz abgetastet wird, dann wird es ni
 
 \emph{Was besagt der Faltungssatz? Nennen Sie eine in der Vorlesung genannte Anwendung und erklären Sie, warum der Faltungssatz angewandt wird.}
 
+Der Faltungssatz besagt: \enquote{Einer Faltung im Ortsraum entspricht einer Multiplikation im Frequenzraum}. Eine Faltung ist eine Operation, die man auf zwei Funktionen anwenden kann. Hierbei wird eine Funktion an der y-Achse gespiegelt, an der x-Achse verschoben, die Funktionen werden multipliziert und integriert. Diese Operation entspricht einer Multiplikation dieser Funktionen im Frequenzraum. Damit werden unter anderen Filter realisiert.
+
 \section*{Aufgabe 3: Fouriertheorie}
 
 \emph{Die Fourierreihe ist definiert durch}
@@ -117,23 +121,68 @@ a_n
 b_n 
 &= \frac{1}{\pi} \int_{-\pi}^\pi f(x) \sin(n x) dx\\
 & =\frac{1}{\pi} \left[\int_{-\pi}^{-\frac{\pi}{2}}(-1)\sin(n x) dx + \int_{-\frac{\pi}2}^\frac{\mathrm\pi}2(0)\;\sin(nx)dx\;+\int_\frac{\pi}{2}^\pi(-1)\sin(n x) dx\right]\\
-&=\frac{1}{\pi}\left[\left(\frac{\cos(-\frac{\pi n}2)}n-\frac{\displaystyle\cos(-\mathrm{πn})}n\right)+0+\left(\frac{\displaystyle\cos(\mathrm{πn})}n-\frac{\displaystyle\cos(\frac{\mathrm{πn}}2)}n\right)\right]=\\
-&=\frac1{\mathrm\pi}\left(\frac{\displaystyle\cos(\frac{\mathrm{πn}}2)}n-\frac{\displaystyle\cos(\mathrm{πn})}n+\frac{\displaystyle\cos(\mathrm{πn})}n-\frac{\displaystyle\cos(\frac{\mathrm{πn}}2)}n\right)\\
-&=\frac1{\mathrm\pi}0\\
+&=\frac{1}{\pi}\left[\left(\frac{\cos(-\frac{\pi n}2)}n-\frac{\cos(-\pi n)}n\right)+0+\left(\frac{\cos(\pi n)}n-\frac{\cos(\frac{\pi n}{2})}n\right)\right]=\\
+&=\frac{1}{\pi}\left(\frac{\cos(\frac{\pi n}2)}n-\frac{\cos(\pi n)}n+\frac{\cos(\pi n)}n-\frac{\cos(\frac{\pi n}2)}n\right)\\
+&=\frac{1}{\pi}0\\
 &=0
 \end{align*}
-
-
-%{\begin{array}{l}f(x)=\frac2{\mathrm\pi}{\textstyle\sum_{n=0}^\infty}\frac{\sin({\displaystyle\frac{\mathrm\pi}2}n)\cos(nx)}n=\frac2{\mathrm\pi}\left(\frac{\sin({\displaystyle\frac{\mathrm\pi}2})\cos(x)}1+\frac{\sin(\mathrm\pi)\cos(2x)}2+\frac{\sin({\displaystyle\frac{3\mathrm\pi}2})\cos(3x)}3+...\right)=\\=\frac2{\mathrm\pi}\left(\cos(x)-\frac{\cos(3x)}3+\frac{\cos(5x)}5-\frac{\cos(7x)}7+...\right)\end{array}}
-
+\begin{align*}
+f(x)
+&= \frac{2}{\mathrm\pi}{\sum_{n=0}^\infty}\frac{\sin({\frac{\mathrm\pi}2}n)\cos(nx)}n\\
+&=\frac2{\pi}\left(\frac{\sin({\frac{\pi}2})\cos(x)}1+\frac{\sin(\mathrm\pi)\cos(2x)}2+\frac{\sin({\frac{3\mathrm\pi}2})\cos(3x)}3+...\right)\\
+&=\frac2{\pi}\left(\cos(x)-\frac{\cos(3x)}3+\frac{\cos(5x)}5-\frac{\cos(7x)}7+...\right)
+\end{align*}
 
 
 \section*{Aufgabe 4: Mathematische Grundlagen}
 
-\emph{Tragen Sie die folgenden Punkte in jeweils ein passendes Koordinatensystem ein und transformieren sie Polarkoordinaten zu kartesischen Koordinaten und umgekehrt. Runden Sie auf 4 Nachkommastellen.}
+\emph{Tragen Sie die folgenden Punkte}
+\begin{align*}
+A &= (5, 7) \quad A \in (\mathbb{R} \times \mathbb{R})\\
+B &= (5, \frac{\pi}{2}) \quad B \in (\mathbb{R} \times [0, 2\pi])
+\end{align*}
+
+\emph{in jeweils ein passendes Koordinatensystem ein und transformieren sie Polarkoordinaten zu kartesischen Koordinaten und umgekehrt. Runden Sie auf 4 Nachkommastellen.}
+
+
+Um $A$, welches in einem kartesischen Koordinatensystem angegeben ist, in ein polares Koordinatensystem umzuformen, rechnen wir:
+\begin{align*}
+  r &= \sqrt{x^2 + y^2} = \sqrt{25 + 49} = 8,6023\\
+  \varphi &= \arctan(\frac{7}{5}) = 0,9505
+\end{align*}
+
+Um $B$, welches in einem polaren Koodinatensystem angegeben ist, in ein karteisches System umzuwandeln, rechnen wir:
+\begin{align*}
+  x &= r \cos(\varphi) = 5 \cdot 0 = 0\\
+  y &= r \sin(\varphi) = 5 \cdot 1 = 5\\
+\end{align*}
+
+Jetzt können wir die beiden Punkte in Koordinatensysteme zeichnen.
+
+\begin{tikzpicture}
+\begin{axis}[xmin=0,ymin=0,xmax=10,ymax=10]
+\addplot[mark=*] coordinates {(5,7)} node[label={$A$}] {};
+\end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\begin{polaraxis}
+\addplot[mark=*] coordinates {(90,5)} node[label=below:{$B$}] {};
+\end{polaraxis}
+\end{tikzpicture}
+
 
 \emph{Gegeben seien die folgenden Vektoren:}
+\begin{align*}
+\vec{a} &= \begin{pmatrix}3\\0\end{pmatrix}, & \vec{b} &= \begin{pmatrix}3\\4\end{pmatrix}, & \vec{c} &= \begin{pmatrix}0\\2\end{pmatrix}.
+\end{align*}
 
-\emph{Blah.}
+
+\emph{Berechnen Sie die Projektion $\vec{a}_{\vec{b}}$ des Vektors $\vec{a}$ auf den Vektor $\vec{b}$ sowie die Projektion $\vec{a}_{\vec{c}}$ des Vektors $\vec{a}$ auf den Vektor $\vec{c}$.}
+\begin{align*}
+\vec{a}_{\vec{b}} &= \frac{\vec{a}, \vec{b}}{\vec{a}} = \frac{3*3+0*4}{\sqrt{9+16}}=1,8\\
+\vec{a}_{\vec{c}} &= \frac{\vec{a}, \vec{c}}{\vec{c}}=\frac{3 * 0 + 0 * 2}{\sqrt{4}} = 0
+\end{align*}
+
 
 \end{document}

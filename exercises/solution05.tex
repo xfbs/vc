@@ -1,0 +1,131 @@
+\documentclass[
+  ngerman,
+  DIV=14
+]{scrartcl}
+\usepackage{babel}
+\usepackage{csquotes}
+
+% typography
+\usepackage{fontspec}
+%\usepackage[utopia]{mathdesign}
+\usepackage{newpxmath}
+\setsansfont{Open Sans}[
+  BoldFont={Open Sans Bold},
+  ItalicFont={Open Sans Italic}]
+\setmonofont[Scale=0.87]{Menlo}
+\setmainfont{Palatino}
+\linespread{1.15}
+%\renewcommand\familydefault{\sfdefault}
+\usepackage[factor=1000]{microtype}
+
+% graphics, drawings, etc.
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{soul}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.arrows}
+\usetikzlibrary{positioning}
+\usetikzlibrary{pgfplots.polar}
+
+% highlighting, lists, code
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  numberstyle=\sffamily\footnotesize\color{gray},
+  %escapeinside=||,
+  keywordstyle=\color{blue!50!black},
+  stringstyle=\color{green!50!black}}
+
+% math
+\usepackage{amsmath}
+\usepackage{siunitx}
+
+% links
+\usepackage[
+  colorlinks,
+  linkcolor={red!50!black},
+  citecolor={blue!50!black},
+  urlcolor={blue!80!black}
+]{hyperref}
+
+\subject{Visual Computing}
+\title{Bilder}
+\subtitle{Übungsblatt 5}
+\author{Patrick Elsen, Dmytro Klepatskyi,\\Costa Weiland, Nana Atchoukeu Chris-Mozart}
+\date{Wintersemester 2018-2019}
+\publishers{Technische Universität Darmstadt}
+
+\begin{document}
+\maketitle
+
+\section*{Aufgabe 1: Histogramme}
+
+\emph{Weisen Sie den folgenden 4 Abbildungen jeweils einen der folgenden Eigenschaften zu: Kontrast hoch, Kontrast niedrig, Helligkeit hoch, Helligkeit niedrig.}
+
+Abbildung 1: Helligkeit niedrig; Abbildung 2: Kontrast hoch; Abbildung 3: Helligkeit hoch; Abbildung 4: Kontrast niedrig.
+
+\emph{Erklären Sie kurz, was Histogramme sind und wie sie sich unterscheiden können. Nehmen Sie dabei Bezug auf die vier Abbildungen aus Aufgabenteil a).}
+
+Ein Histogramm ist eine graphische Darstellung der Häufigkeitsverteilung metrisch skalierter Merkmale (Statistische Verteilung der Grauwerte). Abbildungen 1 und 3 haben den gleichen Kontrast, aber der Mittelwert aller Grauwerte der dritten Abbildung ist höher als bei der Abbildung 1 und deswegen sieht drittes Bild heller aus (es halt also eine höhere Helligkeit). Bei den Abbildungen 2 und 4 geht es um den Kontrast, also der Varianz aller Grauwerte. Je größer die Varianz der Grauwerte, desto deutlicher sieht das Bild aus.
+
+\emph{Erklären Sie die Funktionsweise eines Histogrammausgleichs. Welche Eigenschaften weisen die Bilder aus Teil (a) nach einem Histogrammausgleich auf?}
+
+Histogrammausgleichsverfahren transformiert die Grauwertskala anhand der Kurve der Summenwahrscheinlichkeit. Dadurch wird die Verteilung der Balken auf der x-Achse geändert, d.h. Histogramm so transformiert wird, dass Auftrittswahrscheinlichkeit aller Graustufen möglichst gleich wird. 
+
+\section*{Aufgabe 2: Bildfilterung}
+
+\emph{Was ist der Unterschied zwischen Pixeloperationen und Filtermasken?}
+
+Unter Pixeloperationen versteht man Manipulationen eines Pixels unabhängig von seiner Nachbarschaft. Bei den Filtermasken hängt die Manipulation eines Pixels von seinen Nachbarschaft ab.
+
+\emph{Welche Probleme können bei der Anwendung von Filtermasken am Rand eines Bildes auftreten? Geben Sie 2 mögliche Behandlungsstrategien an.}
+
+Bei der Anwendung von Filtermasken sind die Pixel wichtig, die in der Nähe vom betrachteten Pixel sind. Das Problem besteht darin, dass es Randpixels gibt, deren Nachbarn sozusagen das Bild verlassen. Um das Problem zu vermeiden, können sogenannte Randpixels vernachlässigt werden; oder aber die Maske um die „überstehenden“ Bereichen entsprechend verkleinert werden.
+
+\section*{Aufgabe 3: Bildkompressionsmethoden}
+
+\emph{Nennen Sie die beiden Kompressionsarten, die Sie in der Vorlesung kennengelernt haben. Wie unterscheiden sie sich? Geben Sie außerdem jeweils zwei Anwendungsgebiete und ein Dateiformat für die Kompressionsarten an.}
+
+Es existieren zwei Arten von der Kompression: verlustfreie und verlustbehaftete. Bei der verlustfreien Kompression spricht man von der komprimierten Datei, die eindeutig in die Originaldatei transformiert werden können, die Bildqualität wird also nicht verloren. Beispiele für Dateiformate sind PNG, TIFF und WebP. Generell werden solche Verfahren genutzt, wenn pixelgenaue Reproduktion notwendig ist,  zum Beispiel bei Bildschirmfotos oder bei digitalen Logos. Hier sind Artefakte, die durch verlustbehaftete Kompressionsarten entstehen, unerwündscht.
+
+Bei verlustbehafteten Kompressionsarten ist die exakte Rekonstruktion des Bildes nicht mehr möglich, da Artefakte entstehen und Details verloren gehen. Dafür kann man bessere Kompressionen erreichen. Das JPEG-Format ist ein Beispiel für ein verlustbehaftetes Kompressionsverfahren. Dieses wird eingesetzt in der Photographie (Photosensoren sind nicht exakt, deswegen werden die Artefakte nicht als störend empfunden) und bei Webanwendungen (JPEG-Dateien sind meist kleiner und können so schneller versendet werden).
+
+\section*{Aufgabe 4: JPEG Kompression}
+
+\emph{Wandeln Sie die folgenden RBG-Werte in den YC\textsubscript{r}C\textsubscript{b}-Farbraum um: $(62,235,149)$ und $(252, 218, 236)$. Runden Sie Ihr Ergebnis auf Ganzzahlen und geben Sie den Rechenweg an.}
+
+Der Farbwert $(62,235,149)$ ist $(174, 113, 49)$ im YC\textsubscript{r}C\textsubscript{b}-Farbraum.
+\begin{align*}
+\begin{bmatrix}Y'\\C_r\\C_b\end{bmatrix}
+&= \begin{bmatrix}0\\128\\128\end{bmatrix}
++ \begin{bmatrix}0,299&0,587&0,114\\-0,168736&-0,331264&0,5\\0,5&-0,418688&-0,081312\end{bmatrix}
+\begin{bmatrix}62\\235\\149\end{bmatrix}\\
+&= \begin{bmatrix}
+0+0,299\cdot62+0,587\cdot235+0,114\cdot149\\
+128−0,168736\cdot62−0,331264\cdot235+0,5\cdot149\\
+128+0,5\cdot62-0,418688\cdot235-0,081312\cdot 149
+\end{bmatrix}\\
+&= \begin{bmatrix}174\\113\\49\end{bmatrix}
+\end{align*}
+
+Der Farbwert $(252, 218, 236)$ ist $(230, 131, 144)$ im YC\textsubscript{r}C\textsubscript{b}-Farbraum.
+\begin{align*}
+\begin{bmatrix}Y'\\C_r\\C_b\end{bmatrix}
+&= \begin{bmatrix}0\\128\\128\end{bmatrix}
++ \begin{bmatrix}0,299&0,587&0,114\\-0,168736&-0,331264&0,5\\0,5&-0,418688&-0,081312\end{bmatrix}
+\begin{bmatrix}252\\218\\236\end{bmatrix}\\
+&= \begin{bmatrix}
+0+0,299\cdot252+0,587\cdot218+0,114\cdot236\\
+128−0,168736\cdot252−0,331264\cdot218+0,5\cdot236\\
+128+0,5\cdot252-0,418688\cdot218-0,081312\cdot 236
+\end{bmatrix}\\
+&= \begin{bmatrix}230\\131\\144\end{bmatrix}
+\end{align*}
+
+\emph{Erklären Sie, wie eine diskrete Kosinustransformation funktioniert und warum diese für die JPEG Kompression hilfreich ist. Welchen Vorteil bietet die DCT gegenüber der diskreten Fouriertransformation?}
+
+Bildinformationen werden in den Frequenzbereich umgewandelt, d.h. Rasterung jeder Komponente (Y, CB, CR) in 8x8 Bildblöcke. Bildblöcke werden DCT unterzogen und als Vektoren interpretiert. Diese neue Darstellung der Bildinformation ist besser für die folgenden Schritte der Bildkompression geeignet. Filterung (durch den folgenden Quantisierungsschritt) von hohen Frequenzen in den Farbanteilen, die vom menschlichen Auge nicht/kaum wahrgenommen werden können. Im Vergleich zu Fourierreihe ist die DCT einfacher zur Berechnung, da sie nur aus dem Realteil der Fourierreihe besteht.
+
+\end{document}

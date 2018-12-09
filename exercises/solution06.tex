@@ -1,0 +1,120 @@
+\documentclass[
+  ngerman,
+  DIV=14
+]{scrartcl}
+\usepackage{babel}
+\usepackage{csquotes}
+
+% typography
+\usepackage{fontspec}
+%\usepackage[utopia]{mathdesign}
+\usepackage{newpxmath}
+\setsansfont{Open Sans}[
+  BoldFont={Open Sans Bold},
+  ItalicFont={Open Sans Italic}]
+\setmonofont[Scale=0.87]{Menlo}
+\setmainfont{Palatino}
+\linespread{1.15}
+%\renewcommand\familydefault{\sfdefault}
+\usepackage[factor=1000]{microtype}
+
+% graphics, drawings, etc.
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{soul}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.arrows}
+\usetikzlibrary{positioning}
+\usetikzlibrary{pgfplots.polar}
+
+% highlighting, lists, code
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  numberstyle=\sffamily\footnotesize\color{gray},
+  %escapeinside=||,
+  keywordstyle=\color{blue!50!black},
+  stringstyle=\color{green!50!black}}
+
+% math
+\usepackage{amsmath}
+\usepackage{siunitx}
+
+% links
+\usepackage[
+  colorlinks,
+  linkcolor={red!50!black},
+  citecolor={blue!50!black},
+  urlcolor={blue!80!black}
+]{hyperref}
+
+\subject{Visual Computing}
+\title{Bildverarbeitung}
+\subtitle{Übungsblatt 6}
+\author{Patrick Elsen, Dmytro Klepatskyi,\\Costa Weiland, Nana Atchoukeu Chris-Mozart}
+\date{Wintersemester 2018-2019}
+\publishers{Technische Universität Darmstadt}
+
+\begin{document}
+\maketitle
+
+\section*{Aufgabe 1: Blurring/Deblurring}
+
+\emph{Erklären Sie den Begriff Image Blurring und nennen Sie einen Filter, der dies durchführt.}
+
+Wenn es ein Originalbild $f$ gibt, wird die verwischte Version dieses Bildes $g = a(f)$ als eine Faltung $f$ mit $a$ dargestellt. Wobei $a$ ist oft die Gaußglocke. Im Fourierraum: $G = F \cdot A$ (wobei A die Gaußglocke!). Um das verwischte Bild zu bekommen, verwendet man oft den Gauß-Filter.
+
+\emph{Nennen und erklären Sie die beiden Probleme, die beim Deblurring auftreten können.}
+
+Wenn es um Image Deblurring geht, spricht man umgekehrt von Bildrekonstruktion, d.h. gegeben sei ein verwischtes Bild und das Originalbild wird gesucht.
+Die Rekonstruktion sieht folgendermaßen aus:F=A-1·G.
+Dabei treten folgende Probleme auf:
+(1) Der Blurring-Kernel (A) kann unendlich klein werden, sodass es beinahe zu einer Division durch Null kommt. D.h. Rauschen und/oder kleine numerische Fehler in G werden verstärkt.
+(2) Problem 2 sagt, dass es immer Rauschen gibt. D.h. das verwischte Bild schon am Anfang die Rauschen enthaltet. => g=a(f)+n.
+
+\section*{Aufgabe 2: Einschrittverfahren}
+
+\emph{Wie löst der Wiener Filter eines der Probleme von Deblurring? Erläutern Sie dies im Zusammenhang mit dem Parameter R.}
+
+Wir gehen davon aus, dass es immer die Rauschen existieren ($g=a(f)+n$). Laut dem Einschrittverfahren wird das Deblurring-Problem durch Regularisierung des Filters im Fourierraum gelöst. Der erhaltene Filter heißt Wiener Filter.
+\begin{align*}
+F = \frac{A^\circ}{|A|^2+R^2}R  
+\end{align*}
+R ist das Verhältnis von Rauschen zu Signal.
+
+
+\emph{Welche Filter können durch unterschiedliche R entstehen? Nennen Sie die Auswirkungen die diese Filter auf ein Bild haben können.}
+
+Der Parameter $R$ entscheidet was verstärkt wird. Ist dieser zu groß gewählt (Tiefpass-Filter), dann wird nur die grobe Struktur behalten, die Kanten aber verwischt und Rauschen entfernt. Wählt man diesen Parameter zu klein (Hochpass-Filter), dann werden grobe Strukturen und Kanten entfernt und das Rauschen verstärkt. Wird der Parameter ideal gewählt, dann wird das Rauschen entfernt, grobe Struktur behalten und die Kantenstruktur wird leicht verstärkt (deblurring).
+
+\emph{Es wurde neben dem Wiener Filter noch ein weiteres Einschrittverfahren vorgestellt um Rauschen aus Bildern zu filtern. Welches Verfahren ist dies und wie funktioniert es?}
+
+Ein weiteres Verfahren heißt Deblurring mit einem Scale-Space-Ansatz. Deblurring kann auch durchgeführt werden, indem der Laplace-Operator subtrahiert wird und mehr Terme hinzugefügt werden, um das Ergebnis so lange zu verfeinern, bis ein optimales Bild vorliegt. Das Hinzufügen von zu vielen Termen wird das Rauschen allerdings wieder verstärken.
+
+\section*{Aufgabe 3: Mehrschrittverfahren}
+
+\emph{Beschreiben sie die grundlegende Idee von Mehrschrittverfahren, wie sie in der Vorlesung vorgestellt wurden.}
+
+Die grundlegende Idee von Mehrschrittverfahren basiert sich auf die Betrachtung der Energie eines Bildes. Die Energie stellt dar, wieviel Intensität in den Pixeln vorhanden ist. Um ein optimales Bild zu erzeugen, muss die Energie minimiert werden.
+
+\emph{Beschreiben Sie die Auswirkungen des Parameters k auf die Perona-Malik Methode.}
+
+Der Parameter $k$ in der Perona-Malik Methode bestimmt den Einfluss der Kantenstärke. Wenn $k$-Parameter groß ist, bleiben nur stärkere Kanten übrig. Wenn $k$ klein ist, bleiben fast alle Kanten und Rauschen übrig.
+
+\emph{Erklären Sie den Effekt der Perona-Malik Methode auf ein Bild. Welches Problem tritt dabei auf?}
+
+Abhängig von Wahl des $k$-Parameters können manche Kanten verstärkt werden und die andere entfernt werden. D.h. durch diese Methode können die Rauschen entfernt werden, sodass die wichtigen Kanten übrig bleiben.
+Wenn die Anzahl der Iterationen zu hoch ist, führt es zu schlechten Ergebnissen. Zunächst steigt das Verhältnis Signal-zu-Rauschen an, danach fällt wieder ab. Deswegen wird eine Stoppzeit benötigt.
+
+\emph{Wie löst die Total Variation Methode dieses Problem?}
+
+Wenn wir ein Modell $g = a(f) + n$ haben und eine Lösung $L$, die nahe an $f$ sein soll, dann sollte Verwischen von $L$ und Hinzufügen gleichartigen Rauschens sollte $g$ zurückliefern. Daraus bekommt man zusätzliche Bedingungen für die Lösung $L$
+\begin{align*}
+\int_{x, y} g - a(L) dxdy &= 0\\
+\int_{x, y} (g - a(L))^2 dxdy &= \sigma^2
+\end{align*}
+Bei der Methode der totalen Variation wird diese Beschränkungen zu dem Energieterm hinzugefügt.
+
+\end{document}
